@@ -6,8 +6,9 @@ uniform sampler2D rectTexture;
 
 void main()
 {
+	float discardThreshold = 0.8f;
 	vec4 sampledColor = texture(rectTexture, texCoord);
-	if(sampledColor.a <= 0.1f)
+	if(sampledColor.a <= discardThreshold)
 	{
 		discard;
 	}
