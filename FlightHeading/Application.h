@@ -20,6 +20,7 @@ private:
 	glm::vec4 ClearColor = glm::vec4(0.25f, 0.3f, 0.3f, 1.0f);
 	std::shared_ptr<VertexArray> RectVAO;
 	std::shared_ptr<VertexBuffer> RectVB;
+	std::shared_ptr<IndexBuffer> RectIB;
 	std::shared_ptr<VertexBufferLayout> RectVBL;
 	std::shared_ptr<Shader> DrawRectShader;
 	std::shared_ptr<Texture> CompassBackground;

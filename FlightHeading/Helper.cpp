@@ -78,25 +78,6 @@ IndexBuffer::IndexBuffer(const uint* Data, uint InCount)
 	GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(uint), Data, GL_STATIC_DRAW));
 }
 
-IndexBuffer::IndexBuffer(uint InCount)
-	: Count(InCount)
-{
-	ASSERT(sizeof(GLuint) == sizeof(uint));
-
-	uint* Indices = new uint[Count];
-
-	for (int i = 0; i < Count; i++)
-	{
-		Indices[i] = i;
-	}
-
-	GLCALL(glGenBuffers(1, &RendererID));
-	GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, RendererID));
-	GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(uint), Indices, GL_STATIC_DRAW));
-
-	delete[] Indices;
-}
-
 IndexBuffer::~IndexBuffer()
 {
 	GLCALL(glDeleteBuffers(1, &RendererID));
@@ -115,7 +96,7 @@ void IndexBuffer::Unbind() const
 
 // Begin- Texture
 
-Texture::Texture(const std::string& Path, bool FlipUV /*= true*/, bool Gamma/* = true*/, GLenum RepeatMode /*= GL_REPEAT*/)
+Texture::Texture(const std::string& Path, bool FlipUV /*= true*/, bool Gamma/* = false*/, GLenum RepeatMode /*= GL_REPEAT*/)
 	: RendererID(0), FilePath(Path), LocalBuffer(nullptr), Width(0), Height(0), BPP(0)
 {
 	stbi_set_flip_vertically_on_load(FlipUV);

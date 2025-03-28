@@ -82,7 +82,6 @@ class IndexBuffer : public Useful::NonCopyable
 {
 public:
 	IndexBuffer(const uint* Data, uint InCount);
-	IndexBuffer(uint InCount);
 	IndexBuffer() = delete;
 	~IndexBuffer();
 
@@ -99,7 +98,7 @@ class Texture : public Useful::NonCopyable
 {
 public:
 	Texture() = delete;
-	Texture(const std::string& Path, bool FlipUV = true, bool Gamma = true, GLenum RepeatMode = GL_REPEAT);
+	Texture(const std::string& Path, bool FlipUV = true, bool Gamma = false, GLenum RepeatMode = GL_REPEAT);
 	~Texture();
 
 	void Bind(uint Slot = 0) const;

@@ -138,7 +138,6 @@ void Application::Draw()
 {
     constexpr static const char* rectTexture = "rectTexture";
     constexpr static const char* modelMat = "modelMat";
-    constexpr static const int NumVertices = 6;
     constexpr static const glm::mat4 IdentityMat = glm::mat4(1.0f);
 
     const float HeadingRadians = glm::radians(CurrentHeading);
@@ -147,38 +146,41 @@ void Application::Draw()
     CompassBackground->Bind(0);
     DrawRectShader->SetUniform1i(rectTexture, 0);
     DrawRectShader->SetUniformMatrix4f(modelMat, HeadingMat);
-    GLCALL(glDrawArrays(GL_TRIANGLES, 0, NumVertices));
+    GLCALL(glDrawElements(GL_TRIANGLES, RectIB->GetCount(), GL_UNSIGNED_INT, 0));
 
     CompassForeground->Bind(0);
     DrawRectShader->SetUniform1i(rectTexture, 0);
     DrawRectShader->SetUniformMatrix4f(modelMat, IdentityMat);
-    GLCALL(glDrawArrays(GL_TRIANGLES, 0, NumVertices));
+    GLCALL(glDrawElements(GL_TRIANGLES, RectIB->GetCount(), GL_UNSIGNED_INT, 0));
 }
 
 void Application::LoadRenderData()
 {
-    // todo: use index buffer
     float RectVertices[] =
     {
         // Position   // TexCoord
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
+        -1.0f,  1.0f,  0.0f, 1.0f, // top left
+        -1.0f, -1.0f,  0.0f, 0.0f, // bottom left
+         1.0f, -1.0f,  1.0f, 0.0f, // bottom right
+         1.0f,  1.0f,  1.0f, 1.0f  // top right
     };
+
+    uint RectIndices[] = { 0, 1, 2, 0, 2, 3 };
+
+    const int RectVertexCount = sizeof(RectVertices) / sizeof(float);
+    const int RectIndexCount = sizeof(RectIndices) / sizeof(uint);
 
     RectVAO = std::make_shared<VertexArray>();
     RectVAO->Bind();
-    const int RectVertexCount = sizeof(RectVertices) / sizeof(float);
+
     RectVB = std::make_shared<VertexBuffer>(RectVertices, sizeof(float) * RectVertexCount);
     RectVBL = std::make_shared<VertexBufferLayout>();
-    RectVBL->Push(2); // position
-    RectVBL->Push(2); // tex coord
+    RectVBL->Push(2); // Position
+    RectVBL->Push(2); // Tex coord
     RectVAO->AddBuffer(*RectVB.get(), *RectVBL.get());
-    DrawRectShader = std::make_shared<Shader>("res/shaders/DrawRect.vert", "res/shaders/DrawRect.Frag");
+    RectIB = std::make_shared<IndexBuffer>(RectIndices, RectIndexCount);
+
+    DrawRectShader = std::make_shared<Shader>("res/shaders/DrawRect.vert", "res/shaders/DrawRect.frag");
     CompassBackground = std::make_shared<Texture>("res/textures/CompassBackground.png");
     CompassForeground = std::make_shared<Texture>("res/textures/CompassForeground.png");
 }

@@ -9,5 +9,4 @@ void main()
 {
 	texCoord = aTexCoord;
 	gl_Position = modelMat * vec4(aPosition, 0.f, 1.f);
-	//gl_Position = vec4(aPosition, 0.f, 1.f);
 }
