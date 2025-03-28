@@ -95,7 +95,7 @@ private:
 	uint Count;
 };
 
-class Texture /*: public Useful::NonCopyable*/
+class Texture : public Useful::NonCopyable
 {
 public:
 	Texture() = delete;
@@ -127,12 +127,6 @@ public:
 	void Unbind() const;
 
 	void SetUniform1i(const std::string& Name, int Value) const;
-	void SetUniformTexture(const std::string& Name, int Value) const;
-	void SetUniform1f(const std::string& Name, float Value) const;
-	void SetUniform2f(const std::string& Name, const glm::vec2& Vec) const;
-	void SetUniform4f(const std::string& Name, float V0, float V1, float V2, float V3) const;
-	void SetUniform4f(const std::string& Name, const glm::vec4& Vec) const;
-	void SetUniform3f(const std::string& Name, const glm::vec3& Vec) const;
 	void SetUniformMatrix4f(const std::string& Name, const glm::mat4& Matrix) const;
 	
 private:

@@ -10,9 +10,19 @@ typedef unsigned char uchar;
 template<typename T>
 using CRef = const T&;
 
+#ifdef _DEBUG
 #define ASSERT(x) if(!(x)) __debugbreak()
+#else
+#define ASSERT(x)
+#endif // _DEBUG
+
 #define ASSERTNOENTRY(Msg) ASSERT(false && Msg)
+
+#ifdef _DEBUG
 #define GLCALL(x) Useful::GLClearError();x;ASSERT(Useful::GLLogCall(#x, __FILE__, __LINE__))
+#else
+#define GLCALL(x) x;
+#endif // _DEBUG
 
 namespace Useful
 {
